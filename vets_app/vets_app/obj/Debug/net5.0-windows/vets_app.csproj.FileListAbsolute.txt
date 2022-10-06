@@ -1,0 +1,56 @@
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\vets_app.exe
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\vets_app.deps.json
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\vets_app.runtimeconfig.json
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\vets_app.runtimeconfig.dev.json
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\vets_app.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\ref\vets_app.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\vets_app.pdb
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\MySql.Data.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\Google.Protobuf.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\ZstdNet.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\K4os.Compression.LZ4.Streams.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\BouncyCastle.Crypto.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\Ubiety.Dns.Core.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\K4os.Compression.LZ4.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\K4os.Hash.xxHash.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\bin\Debug\net5.0-windows\MySql.Data.xml
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.csproj.AssemblyReference.cache
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.csproj.GenerateResource.cache
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.AssemblyInfoInputs.cache
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.AssemblyInfo.cs
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.csproj.CoreCompileInputs.cache
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.csproj.CopyComplete
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\ref\vets_app.dll
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.pdb
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.genruntimeconfig.cache
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.homeFrm.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.staffHomeFrm.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.staffLoginFrm.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.practitionerHomeFrm.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.appointmentManagerFrm.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.stockManagerForm.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.loginForm.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.homeFrm2.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.customerHomeFrm.resources
+C:\Users\rahim\source\repos\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.customerRegisterFrm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.csproj.AssemblyReference.cache
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.appointmentManagerFrm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.customerHomeFrm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.customerRegisterFrm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.homeFrm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.homeFrm2.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.loginForm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.practitionerHomeFrm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.staffHomeFrm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.staffLoginFrm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.stockManagerForm.resources
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.csproj.GenerateResource.cache
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.AssemblyInfoInputs.cache
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.AssemblyInfo.cs
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.csproj.CoreCompileInputs.cache
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.dll
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\ref\vets_app.dll
+C:\Users\rahim\Google Drive\uni\year3\trimester_2\database_driven_app\vets_app\vets_app\obj\Debug\net5.0-windows\vets_app.pdb

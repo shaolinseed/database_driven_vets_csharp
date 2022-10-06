@@ -1,0 +1,130 @@
+DELIMITER $$
+CREATE TRIGGER decrementMedicationStock
+AFTER UPDATE 
+    ON appointments FOR EACH ROW
+BEGIN
+    SET @stockLevel = (SELECT stock FROM medication_sizes WHERE medication_size_id=21);
+
+
+    IF NEW.status LIKE %Completed% THEN
+        UPDATE medication_sizes 
+        SET stock = @stockLevel - 1
+        WHERE medication_size_id=21;
+    END IF;
+
+TRIGGER 1 
+
+END; $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER decrementMedicationStock
+AFTER UPDATE 
+    ON appointments FOR EACH ROW
+BEGIN
+    SET @speciesID = (select species_id FROM breeds 
+                        WHERE(breed_id=(SELECT breed_id 
+                        FROM pets WHERE pet_id=NEW.pet_id)));
+    SET @medicationToDecrement = (SELECT medication_size_id
+                                    FROM species_service_medications 
+                                    WHERE (species_service_id = 
+                                    (SELECT species_service_id 
+                                    FROM species_services
+                                    WHERE (species_id=@speciesId AND service_id=NEW.service_id))));
+    SET @stockLevel = (SELECT stock FROM medication_sizes WHERE medication_size_id=@medicationToDecrement);
+    set @serviceName = (SELECT services.name FROM services INNER JOIN 
+                        appointments ON services.service_id=appointments.service_id 
+                        WHERE appointments.appointment_id=OLD.appointment_id); 
+    IF (NEW.status LIKE '%Completed%')
+     THEN
+        UPDATE medication_sizes 
+        SET stock = @stockLevel - 1
+        WHERE medication_size_id=@medicationToDecrement;
+    END IF;
+END; $$
+DELIMITER ;
+
+
+
+SELECT medication_size_id
+ FROM species_service_medications 
+ WHERE (species_service_id = 
+ (SELECT species_service_id 
+ FROM species_services
+  WHERE (species_id=4 AND service_id=6)))
+
+TRIGGER 3
+
+mysql> DELIMITER //
+mysql> CREATE TRIGGER InsertPreventTrigger BEFORE INSERT ON Insert_Prevent
+   -> FOR EACH ROW
+   -> BEGIN
+   -> IF(new.Id < 1 or new.Id > 5) THEN
+   -> SIGNAL SQLSTATE '45000'
+   -> SET MESSAGE_TEXT = 'You can not insert record';
+   -> END IF;
+   -> END //
+Query OK, 0 rows affected (0.20 sec)
+mysql> DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER preventDoubleBook
+AFTER INSERT 
+    ON appointments FOR EACH ROW
+BEGIN
+    SET @serviceTime = (SELECT services.average_time FROM services 
+                        INNER JOIN appointments ON appointments.service_id=services.service_id
+                        WHERE appointments.appointment_id=NEW.appointment_id) - 1;
+
+    SET @serviceTimeFormat = concat("0:", @serviceTime);
+    SET @positiveTime = (SELECT ADDTIME(NEW.start_time, @serviceTimeFormat));
+    SET @negativeTime = (SELECT SUBTIME(NEW.start_time, @serviceTimeFormat));
+
+    IF (SELECT COUNT(*) from appointments 
+                WHERE appointments.date=NEW.date 
+                AND appointments.staff_id = NEW.staff_id
+                AND appointments.status LIKE '%Open%' 
+                AND appointments.start_time BETWEEN @negativeTime AND @positiveTime
+                ) > 1
+     THEN
+     SIGNAL SQLSTATE '42000' SET
+     MESSAGE_TEXT = 'Staff member is busy at this time.';
+     END IF;
+END; $$
+DELIMITER ;
+
+
+
+
+SELECT * from appointments 
+                WHERE appointments.date=NEW.date 
+                AND appointments.start_time=NEW.start_time
+                AND appointments.staff_id = NEW.staff_id
+                AND appointments.status LIKE '%Open%'
+
+
+
+SELECT medication_size_id
+FROM 
+species_service_medications
+LEFT JOIN species_services
+ON 
+species_service_medications.species_service_id=species_services.species_service_id
+
+WHERE 
+()
+
+
+
+SELECT species_id 
+FROM breeds
+WHERE (SELECT breed_id FROM pets INNER JOIN species )
+
+
+
+find the species service ID
+
+find the medication_size_id
+
+
+SELECT species_id FROM breeds WHERE breed_id=(SELECT breed_id FROM pets WHERE pet_id=5)

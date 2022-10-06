@@ -1,0 +1,296 @@
+1.
+
+parameters - '2023-01-31' lower date range, higher date range, Service name to check for 
+DELIMITER $$
+CREATE PROCEDURE emailCheckupListDate (IN serviceToSearch VARCHAR(100), IN dateLower DATE, IN dateHigher DATE)
+BEGIN
+
+SELECT 
+users.first_name as `First name`, 
+users.last_name as `Last name`,
+users.email as `Email`,
+appointments.date as `Last appointment date`
+FROM customers'
+INNER JOIN users ON customers.user_id=users.user_id
+INNER JOIN appointments ON customers.customer_id=appointments.customer_id
+INNER JOIN pets ON customers.customer_id=pets.customer_id
+INNER JOIN services on appointments.service_id=services.service_id
+WHERE (appointments.date BETWEEN '2017-03-22' and '2022-03-22') and (services.name LIKE CONCAT('%General Health Checkup%')); 
+
+END$$
+DELIMITER ;
+
+2. list the practitioner's daily appointments
+
+listPractitionerAppointments(13, CURDATE(), 'Open')
+
+DELIMITER $$
+CREATE PROCEDURE listPractitionerAppointments (IN staffId INT(6), IN date DATE, IN appointmentStatus VARCHAR(50))
+
+BEGIN
+
+SELECT 
+appointments.appointment_id AS ID,
+CONCAT(customers.first_name, " ", customers.last_name) AS Owner,
+pets.name as 'Pet Name',
+appointments.start_time as 'Start Time',
+services.name AS 'Service'
+FROM appointments 
+INNER JOIN customers ON appointments.customer_id=customers.customer_id
+INNER JOIN pets ON appointments.pet_id=pets.pet_id
+INNER JOIN services ON appointments.service_id=services.service_id
+WHERE appointments.date = CURDATE() AND appointments.status LIKE '%Open%' AND appointments.staff_id = @staffId
+ORDER BY start_time ASC;
+
+END$$
+DELIMITER ;
+
+3.
+DELIMITER $$
+CREATE PROCEDURE listPractitionerAppointments (IN staffId INT(6), IN date DATE, IN appointmentStatus VARCHAR(50))
+
+BEGIN
+
+SELECT 
+appointments.appointment_id AS ID,
+CONCAT(customers.first_name, " ", customers.last_name) AS Owner,
+pets.name as 'Pet Name',
+appointments.start_time as 'Start Time',
+services.name AS 'Service'
+FROM appointments 
+INNER JOIN customers ON appointments.customer_id=customers.customer_id
+INNER JOIN pets ON appointments.pet_id=pets.pet_id
+INNER JOIN services ON appointments.service_id=services.service_id
+WHERE appointments.date = CURDATE() AND appointments.status LIKE '%Open%' AND appointments.staff_id = 13
+ORDER BY start_time ASC;
+
+END$$
+DELIMITER ;
+
+SELECT 
+appointments.appointment_id AS ID,
+CONCAT(users.first_name, " ", users.last_name) AS Owner,
+pets.name as 'Pet Name',
+appointments.start_time as 'Start Time',
+services.name AS 'Service'
+FROM appointments 
+INNER JOIN customers ON appointments.customer_id=customers.customer_id
+INNER JOIN users ON customers.user_id=users.user_id
+INNER JOIN pets ON appointments.pet_id=pets.pet_id
+INNER JOIN services ON appointments.service_id=services.service_id
+WHERE appointments.date = CURDATE() AND appointments.status LIKE '%Open%' AND appointments.staff_id = 13
+ORDER BY start_time ASC;
+
+
+
+
+
+
+stored 2
+
+DELIMITER $$
+CREATE PROCEDURE searchCustomers (IN searchString VARCHAR(50))
+BEGIN
+
+SELECT customer_id as `ID`,
+first_name as `First Name`,
+last_name as `Last Name`, 
+email as `Email` 
+FROM customers
+INNER JOIN users ON customers.user_id=users.user_id
+WHERE LOWER(first_name) LIKE LOWER(CONCAT('%', searchString, '%')) 
+OR LOWER(last_name) LIKE LOWER(CONCAT('%', searchString, '%')) 
+OR LOWER(email) LIKE LOWER(CONCAT('%', searchString, '%'))
+AND customers.active=1;
+
+END$$
+DELIMITER ;
+
+
+
+
+
+stored 3
+
+DELIMITER $$
+CREATE PROCEDURE searchMedications (IN isAscOrder INT(1), IN maxEntries INT(4), IN speciesName VARCHAR(30), IN maxStock INT(4))
+BEGIN
+
+IF (speciesName is NOT null)
+THEN
+    SET @speciesId = (SELECT species_id FROM species WHERE name LIKE speciesName);
+END IF;
+
+SELECT 
+medications.name AS 'Medication',
+medication_sizes.description AS 'Size',
+medication_sizes.stock as 'Units',
+brands.contact_email as 'Brand Contact'
+FROM 
+medications
+INNER JOIN medication_sizes ON medications.medication_id=medication_sizes.medication_size_id
+RIGHT JOIN species_medication_sizes ON medication_sizes.medication_size_id=species_medication_sizes.medication_size_id
+RIGHT JOIN brands ON medications.brand_id=brands.brand_id
+
+WHERE (medication_sizes.stock < maxStock)
+AND   (species_medication_sizes.species_id=@speciesId OR @speciesId is NULL)
+
+
+ORDER BY
+  CASE WHEN isAscOrder = 1 THEN medication_sizes.stock ELSE 0 END ASC,
+  CASE WHEN isAscOrder = 0 THEN medication_sizes.stock ELSE 0 END DESC
+
+LIMIT maxEntries;
+
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE findUnhealthyPets ()
+BEGIN
+
+SELECT 
+pets.name AS 'Pet Name',
+pet_weights.weight as 'Weight',
+breeds.name as 'Breed',
+pets.gender as 'Gender',
+CASE
+    WHEN (pet_weights.weight > breeds.male_weight_max_kg) AND (pets.gender='Male')
+    THEN 'Overweight'
+    WHEN (pet_weights.weight < breeds.male_weight_min_kg) AND (pets.gender='Male')
+    THEN 'Underweight'
+    WHEN (pet_weights.weight > breeds.female_weight_max_kg) AND (pets.gender='Female')
+    THEN 'Overweight'
+    WHEN (pet_weights.weight < breeds.female_weight_min_kg) AND (pets.gender='Female')
+    THEN 'Underweight'
+END AS 'Weight Category',
+users.email AS 'Owner Email'
+FROM pets
+INNER JOIN pet_weights ON pets.pet_id=pet_weights.pet_id
+INNER JOIN breeds ON pets.breed_id=breeds.breed_id
+INNER JOIN customers ON pets.customer_id=customers.customer_id
+INNER JOIN users ON customers.user_id=users.user_id
+
+WHERE (pet_weights.weight > breeds.male_weight_max_kg) OR
+		(pet_weights.weight < breeds.male_weight_min_kg) OR
+          (pet_weights.weight > breeds.female_weight_max_kg) OR
+          	(pet_weights.weight < breeds.female_weight_min_kg)         
+GROUP BY (pets.pet_id);
+
+END$$
+DELIMITER ;
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE loadPrescriptions ()
+BEGIN
+
+SELECT addresses.name AS 'Name',
+addresses.post_code AS 'Post Code',
+addresses.line1 AS 'Line 1',
+addresses.line2 AS 'Line 2',
+addresses.town_city AS 'Town/City',
+addresses.county_state AS 'County/State',
+addresses.country AS 'Country'
+FROM customers
+INNER JOIN addresses ON customers.user_id=addresses.user_id
+INNER JOIN pets ON customers.customer_id=pets.customer_id
+INNER JOIN prescriptions ON pets.pet_id=prescriptions.pet_id
+GROUP BY customers.customer_id
+
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE loadTodaysPrescriptions ()
+BEGIN
+
+
+SELECT 
+addresses.name AS 'Name',
+addresses.post_code AS 'Post Code',
+addresses.line1 AS 'Line 1',
+addresses.line2 AS 'Line 2',
+addresses.town_city AS 'Town/City',
+addresses.county_state AS 'County/State',
+addresses.country AS 'Country'
+FROM customers
+INNER JOIN addresses ON customers.user_id=addresses.user_id
+INNER JOIN pets ON customers.customer_id=pets.customer_id
+INNER JOIN prescriptions ON pets.pet_id=prescriptions.pet_id
+WHERE prescriptions.delivery_collection LIKE '%Awaiting Shipment%';
+GROUP BY customers.customer_id;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE listPetCompatibleMedications (IN petId INT(9), IN togglePrescription INT(1))
+BEGIN
+
+SELECT medications.name AS 'Medication Name'
+FROM medications
+INNER JOIN medication_sizes ON medications.medication_id=medication_sizes.medication_id
+INNER JOIN species_medication_sizes ON medication_sizes.medication_size_id=species_medication_sizes.medication_size_id
+INNER JOIN species ON species_medication_sizes.species_id=species.species_id
+INNER JOIN breeds ON species.species_id=breeds.species_id
+LEFT JOIN pets ON breeds.breed_id=pets.breed_id
+
+WHERE pets.pet_id=petId AND medications.prescription=togglePrescription
+GROUP BY medications.name
+ORDER BY medications.name;
+
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE listPractitionerAppointments (IN staffId INT(6), IN dateToCheck DATE, IN appointmentStatus VARCHAR(50))
+BEGIN
+SELECT 
+appointments.appointment_id AS 'ID',
+CONCAT(users.first_name, " ", users.last_name) AS 'Owner',
+pets.name as 'Pet Name',
+appointments.start_time as 'Start Time',
+services.name AS 'Service'
+FROM appointments 
+INNER JOIN customers ON appointments.customer_id=customers.customer_id
+INNER JOIN users ON customers.user_id=users.user_id
+INNER JOIN pets ON appointments.pet_id=pets.pet_id
+INNER JOIN services ON appointments.service_id=services.service_id
+WHERE (appointments.date = dateToCheck 
+        AND appointments.status LIKE CONCAT('%', appointmentStatus, '%')
+         AND appointments.staff_id=staffId)
+ORDER BY start_time ASC;
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE business2 ()
+BEGIN
+SELECT DISTINCT 
+customers.customer_id,
+users.first_name as `First name`, 
+users.last_name as `Last name`,
+users.email as `Email`,
+users.phone_number as `Phone`,
+appointments.date as `Last appointment date`,
+services.name
+FROM appointments
+LEFT JOIN customers ON appointments.customer_id=customers.customer_id
+LEFT JOIN users ON customers.user_id=users.user_id
+INNER JOIN pets ON customers.customer_id=pets.customer_id
+INNER JOIN services on appointments.service_id=services.service_id
+WHERE (NOT (appointments.date > (SELECT SUBDATE(CURDATE(), 365)))
+        OR (appointments.date > (SELECT SUBDATE(CURDATE(), 365)) 
+            AND services.name NOT LIKE '%General Health Checkup%')
+            AND customers.active=1)
+GROUP BY customers.customer_id       
+
+END$$
+DELIMITER ;

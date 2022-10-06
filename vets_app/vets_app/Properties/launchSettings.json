@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "vets_app": {
+      "commandName": "Project",
+      "sqlDebugging": true,
+      "nativeDebugging": true
+    }
+  }
+}

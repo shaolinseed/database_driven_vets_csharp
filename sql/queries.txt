@@ -1,0 +1,113 @@
+Can I view addresses of customers with prescriptions that are awaiting shipment?
+
+SELECT addresses.NAME         AS NAME,
+       addresses.post_code    AS 'Post Code',
+       addresses.line1        AS 'Line 1',
+       addresses.line2        AS 'Line 2',
+       addresses.town_city    AS 'Town/City',
+       addresses.county_state AS 'County/State',
+       addresses.country      AS 'Country'
+FROM   customers
+       INNER JOIN addresses
+               ON customers.user_id = addresses.user_id
+       INNER JOIN pets
+               ON customers.customer_id = pets.customer_id
+       INNER JOIN prescriptions
+               ON pets.pet_id = prescriptions.pet_id
+WHERE  prescriptions.delivery_collection LIKE '%Awaiting Shipment%';  
+
+
+Can I find the contact details for any owners of pets that are due a yearly general health check-up?
+
+SELECT DISTINCT customers.customer_id,
+                users.first_name   AS `First name`,
+                users.last_name    AS `Last name`,
+                users.email        AS `Email`,
+                users.phone_number AS `Phone`,
+                appointments.date  AS `Last appointment date`,
+                services.name
+FROM   appointments
+       LEFT JOIN customers
+              ON appointments.customer_id = customers.customer_id
+       LEFT JOIN users
+              ON customers.user_id = users.user_id
+       INNER JOIN pets
+               ON customers.customer_id = pets.customer_id
+       INNER JOIN services
+               ON appointments.service_id = services.service_id
+WHERE  ( NOT ( appointments.date > (SELECT Subdate(Curdate(), 365)) )
+          OR ( appointments.date > (SELECT Subdate(Curdate(), 365))
+               AND services.name NOT LIKE '%General Health Checkup%' )
+             AND customers.active = 1 )
+GROUP  BY customers.customer_id;  
+
+Can I view pets that are deemed over or underweight depending on their breed and gender?
+
+SELECT pets.NAME          AS 'Pet Name',
+       pet_weights.weight AS 'Weight',
+       breeds.NAME        AS 'Breed',
+       pets.gender        AS 'Gender',
+       CASE
+         WHEN ( pet_weights.weight > breeds.male_weight_max_kg )
+              AND ( pets.gender = 'Male' ) THEN 'Overweight'
+         WHEN ( pet_weights.weight < breeds.male_weight_min_kg )
+              AND ( pets.gender = 'Male' ) THEN 'Underweight'
+         WHEN ( pet_weights.weight > breeds.female_weight_max_kg )
+              AND ( pets.gender = 'Female' ) THEN 'Overweight'
+         WHEN ( pet_weights.weight < breeds.female_weight_min_kg )
+              AND ( pets.gender = 'Female' ) THEN 'Underweight'
+       END                AS 'Weight Category',
+       users.email        AS 'Owner Email'
+FROM   pets
+       INNER JOIN pet_weights
+               ON pets.pet_id = pet_weights.pet_id
+       INNER JOIN breeds
+               ON pets.breed_id = breeds.breed_id
+       INNER JOIN customers
+               ON pets.customer_id = customers.customer_id
+       INNER JOIN users
+               ON customers.user_id = users.user_id
+WHERE  ( pet_weights.weight > breeds.male_weight_max_kg )
+        OR ( pet_weights.weight < breeds.male_weight_min_kg )
+        OR ( pet_weights.weight > breeds.female_weight_max_kg )
+        OR ( pet_weights.weight < breeds.female_weight_min_kg )
+GROUP  BY ( pets.pet_id );  
+
+
+Can I present practitioners with details of their appointments for the day, i.e. the name of the pet and owner, the start time and type of service?
+
+SELECT appointments.appointment_id                    AS ID,
+       Concat(users.first_name, "", users.last_name) AS Owner,
+       pets.NAME                                      AS 'Pet Name',
+       appointments.start_time                        AS 'Start Time',
+       services.NAME                                  AS 'Service'
+FROM   appointments
+       INNER JOIN customers
+               ON appointments.customer_id = customers.customer_id
+       INNER JOIN users
+               ON customers.user_id = users.user_id
+       INNER JOIN pets
+               ON appointments.pet_id = pets.pet_id
+       INNER JOIN services
+               ON appointments.service_id = services.service_id
+WHERE  appointments.date = Curdate()
+       AND appointments.status LIKE '%Open%'
+       AND appointments.staff_id = 13
+ORDER  BY start_time ASC;  
+
+Can I display low-stock medications compatible with small dogs to the stock control manager?
+
+SELECT     medications.NAME       AS 'Medication' medication_sizes.description AS 'Size',
+           medication_sizes.stock AS 'Units',
+           brands.email           AS 'Brand Contact'
+FROM       medications
+INNER JOIN medication_sizes
+ON         medications.medication_id=medication_sizes.medication_size_id
+RIGHT JOIN species_medication_sizes
+ON         medication_sizes.medication_size_id=species_medication_sizes.medication_size_id
+RIGHT JOIN brands
+ON         medications.brand_id=brands.brand_id
+WHERE      (
+                      medication_sizes.stock < 20
+           AND        species_medication_sizes.species_id=1)
+ORDER BY   medication_sizes.stock ASC limit 5; 
